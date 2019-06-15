@@ -1,6 +1,6 @@
 {
   "name": "plotbd",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tool to plot bifurcation diagrams using Node.js and Gnuplot.",
   "main": "src/index.js",
   "scripts": {
