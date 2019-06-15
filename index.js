@@ -1,4 +1,5 @@
 const fs = require('fs');
+const {spawn} = require('child_process');
 
 const tempDataFile = '.bifurcation-data.dat';
 const defaultOptions = {
@@ -24,6 +25,13 @@ function plotbd (chaoticMap, {x0, rValues, iterations, density} = defaultOptions
     }
   }
   dataFile.end();
+  plotDataFile();
+}
+
+function plotDataFile () {
+  let gnuplot = spawn('gnuplot', ['-p']);
+  gnuplot.stdin.write(`plot '${tempDataFile}' with dots notitle\n`);
+  gnuplot.stdin.end();
 }
 
 module.exports = plotbd;
