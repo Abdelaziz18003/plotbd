@@ -3,8 +3,8 @@ const {spawn} = require('child_process');
 
 const tempDataFile = '.bifurcation-data.dat';
 const defaultOptions = {
-  x0: 0.4,
-  rValues: [0.1, 3.99, 1000],
+  x0: null,
+  rValues: null,
   iterations: 300,
   density: 100
 }
@@ -15,11 +15,11 @@ const defaultOptions = {
  * @param {Object} options 
  */
 
-function plotbd (chaoticMap, options = defaultOptions) {
+function plotbd (chaoticMap, options) {
+  options = Object.assign({}, defaultOptions, options);
+  validateOptions(options);
   let {x0, rValues, iterations, density} = options;
   let [rMin, rMax, rNum] = rValues;
-  iterations = iterations ? iterations : defaultOptions.iterations;
-  density = density ? density : defaultOptions.density;
   
   let dataFile = fs.createWriteStream(`${tempDataFile}`);
   for (let r = rMin; r <= rMax; r = r + (rMax - rMin) / rNum) {
@@ -35,6 +35,21 @@ function plotbd (chaoticMap, options = defaultOptions) {
   dataFile.on('close', () => {
     plotDataFile(options);
   })
+}
+
+function validateOptions (options) {
+  const missingRequiredFields = !options.x0 || !options.rValues;
+  const optionsNotValid = 
+    options.rValues.length !== 3 ||
+    options.rValues[0] > options.rValues[1] ||
+    options.density > options.iterations
+
+  if (missingRequiredFields) {
+    throw new Error('x0 and rValues fields are required');
+  }
+  if (optionsNotValid) {
+    throw new Error('One or more options fields are not valid');
+  }
 }
 
 function plotDataFile ({rValues}) {
