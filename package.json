@@ -10,9 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/Abdelaziz18003/plotbd.git"
   },
-  "keywords": [],
+  "keywords": ["bifurcation", "chaos", "gnuplot"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Abdelaziz18003/plotbd/issues"
   },
