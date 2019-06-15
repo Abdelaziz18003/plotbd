@@ -2,7 +2,7 @@
   "name": "plotbd",
   "version": "0.1.0",
   "description": "A tool to plot bifurcation diagrams using Node.js and Gnuplot.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
