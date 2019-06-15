@@ -32,6 +32,13 @@ function plotDataFile () {
   let gnuplot = spawn('gnuplot', ['-p']);
   gnuplot.stdin.write(`plot '${tempDataFile}' with dots notitle\n`);
   gnuplot.stdin.end();
+  gnuplot.on('exit', () => {
+    clearDataFile();
+  })
+}
+
+function clearDataFile () {
+  fs.unlinkSync(`${tempDataFile}`);
 }
 
 module.exports = plotbd;
