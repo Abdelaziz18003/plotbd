@@ -25,7 +25,9 @@ function plotbd (chaoticMap, {x0, rValues, iterations, density} = defaultOptions
     }
   }
   dataFile.end();
-  plotDataFile();
+  dataFile.on('close', () => {
+    plotDataFile();
+  })
 }
 
 function plotDataFile () {
