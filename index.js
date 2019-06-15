@@ -9,12 +9,19 @@ const defaultOptions = {
   density: 100
 }
 
-function plotbd (chaoticMap, {x0, rValues, iterations, density} = defaultOptions) {
-  let dataFile = fs.createWriteStream(`${tempDataFile}`);
-  const [rMin, rMax, rNum] = rValues;
+/**
+ * 
+ * @param {String} chaoticMap 
+ * @param {Object} options 
+ */
+
+function plotbd (chaoticMap, options = defaultOptions) {
+  let {x0, rValues, iterations, density} = options;
+  let [rMin, rMax, rNum] = rValues;
   iterations = iterations ? iterations : defaultOptions.iterations;
   density = density ? density : defaultOptions.density;
-
+  
+  let dataFile = fs.createWriteStream(`${tempDataFile}`);
   for (let r = rMin; r <= rMax; r = r + (rMax - rMin) / rNum) {
     let x = x0;
     for (let i = 0; i < iterations; i++) {
@@ -26,12 +33,13 @@ function plotbd (chaoticMap, {x0, rValues, iterations, density} = defaultOptions
   }
   dataFile.end();
   dataFile.on('close', () => {
-    plotDataFile();
+    plotDataFile(options);
   })
 }
 
-function plotDataFile () {
+function plotDataFile ({rValues}) {
   let gnuplot = spawn('gnuplot', ['-p']);
+  gnuplot.stdin.write(`set xrange [${rValues[0]}: ${rValues[1]}]\n`);
   gnuplot.stdin.write(`plot '${tempDataFile}' with dots notitle\n`);
   gnuplot.stdin.end();
   gnuplot.on('exit', () => {
